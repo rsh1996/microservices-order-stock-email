@@ -1,4 +1,4 @@
-name: Java CI with Maven
+name: Java CI for Microservices
 
 on:
   push:
@@ -7,21 +7,44 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  build-order-service:
+    name: 🛠️ Build Order Service
     runs-on: ubuntu-latest
-
     steps:
-      - name: 📥 Checkout repository
-        uses: actions/checkout@v3
-
-      - name: ☕ Set up JDK 17
+      - uses: actions/checkout@v3
+      - name: Set up JDK
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
-
-      - name: 🛠️ Build with Maven
+      - name: Build & Test Order Service
+        working-directory: order-service
         run: mvn clean install
 
-      - name: ✅ Run Tests
-        run: mvn test
+  build-stock-service:
+    name: 🛠️ Build Stock Service
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Build & Test Stock Service
+        working-directory: stock-service
+        run: mvn clean install
+
+  build-email-service:
+    name: 🛠️ Build Email Service
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Build & Test Email Service
+        working-directory: email-service
+        run: mvn clean install
